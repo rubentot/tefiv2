@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+    <title>TEFI Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        footer { background: #0d2b4e; color: white; padding: 20px 0; margin-top: 100px; }
+        .patent-footer { font-size: 0.8rem; opacity: 0.8; }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h1 class="text-center mb-4 display-5 fw-bold text-primary">TEFI Dashboard</h1>
+
+    <div class="card p-4 mb-5 shadow-lg">
+        <h4 class="mb-3">Opprett ny bolig</h4>
+        <form method="post" action="/new-property" class="row g-3">
+            <div class="col-md-8">
+                <input type="text" name="address" placeholder="Adresse (f.eks Bergen sentrum)" class="form-control" required>
+            </div>
+            <div class="col-md-4">
+                <input type="text" name="price_guide" placeholder="Prisantydning (kun tall)" class="form-control" required>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-success btn-lg">Opprett og få unik TEFI-link</button>
+            </div>
+        </form>
+    </div>
+
+    <h3 class="mt-5">Aktive boliger</h3>
+    {% if properties %}
+    <div class="list-group">
+        {% for prop in properties %}
+        <div class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ prop.address }}</h5>
+                <small>{{ prop.price_guide }} kr</small>
+            </div>
+            <p class="mb-1">Unik TEFI-link (lim inn i Finn-annonsen eller send på SMS):</p>
+            <strong>https://tefi.no/bud/{{ prop.unique_code }}</strong>
+            <br><small><a href="/bud/{{ prop.unique_code }}">Se budgiver-side (test)</a></small>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">Ingen boliger opprettet ennå – opprett din første over!</p>
+    {% endif %}
+</div>
+
+<footer class="text-center patent-footer">
+    <p>© 2025 TEFI – Marcus Atrar & Ruben Tötterman<br>
+    <a href="/om" class="text-white">Patentert teknologi NO 349195</a> · <a href="/personvern" class="text-white">Personvern</a></p>
+</footer>
+</body>
+</html>
